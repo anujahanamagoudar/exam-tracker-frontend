@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import StudyTimer from "./components/StudyTimer";
 import StudyTracker from "./components/StudyTracker";
+import "./App.css";
 
 function App() {
   // 🔑 Persist login after refresh
