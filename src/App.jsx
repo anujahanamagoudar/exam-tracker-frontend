@@ -1,62 +1,35 @@
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './components/Login';
-import Register from './components/Register';
-import StudyTracker from './components/StudyTracker';
-import './App.css';
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import StudyTimer from "./components/StudyTimer";
+import StudyTracker from "./components/StudyTracker";
 
 function App() {
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    // Check if user is logged in
-    const userId = localStorage.getItem('userId');
-    if (userId) {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light');
-  };
+  // 🔑 Persist login after refresh
+  const [auth, setAuth] = useState(
+    !!localStorage.getItem("userId")
+  );
 
   return (
-    <Router>
-      <div className="App">
-        <header>
-          <h1>Study Management System</h1>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <button
-              className="btn btn-secondary btn-sm"
-              onClick={toggleTheme}
-              title="Toggle Theme"
-            >
-              {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-            </button>
-            {isAuthenticated && <button className="btn btn-secondary btn-sm" onClick={() => {
-              localStorage.clear();
-              setIsAuthenticated(false);
-              window.location.href = '/login';
-            }}>Logout</button>}
-          </div>
-        </header>
-        <Routes>
-          <Route path="/login" element={<Login setAuth={setIsAuthenticated} />} />
-          <Route path="/register" element={<Register />} />
-          <Route
-            path="/dashboard"
-            element={isAuthenticated ? <StudyTracker /> : <Navigate to="/login" />}
-          />
-          <Route path="/" element={<Navigate to="/login" />} />
-        </Routes>
-      </div>
-    </Router>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login setAuth={setAuth} />} />
+        <Route path="/login" element={<Login setAuth={setAuth} />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/dashboard"
+          element={auth ? <StudyTracker /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/timer"
+          element={auth ? <StudyTimer /> : <Navigate to="/login" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
