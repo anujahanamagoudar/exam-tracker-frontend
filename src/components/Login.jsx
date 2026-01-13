@@ -15,7 +15,7 @@ const Login = ({ setAuth }) => {
         e.preventDefault();
         console.log("Login form submitted", formData);
         try {
-            const res = await axios.post('http://localhost:5001/api/login', formData);
+            const res = await axios.post('https://exam-tracker-cloud.onrender.com/api/login', formData);
             console.log("Login response:", res.data);
             localStorage.setItem('userId', res.data.userId);
             localStorage.setItem('username', res.data.username);

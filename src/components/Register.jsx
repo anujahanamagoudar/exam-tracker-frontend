@@ -13,7 +13,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5001/api/register', formData);
+            await axios.post('https://exam-tracker-cloud.onrender.com/api/register', formData);
             alert('Registration successful! Please login.');
             navigate('/login');
         } catch (error) {

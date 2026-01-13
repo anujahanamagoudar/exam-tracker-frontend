@@ -55,7 +55,7 @@ const StudyTracker = () => {
     const fetchRecords = async () => {
         if (!userId) return;
         try {
-            const res = await axios.get(`http://localhost:5001/api/studyRecords/${userId}`);
+            const res = await axios.get(`https://exam-tracker-cloud.onrender.com/api/studyRecords/${userId}`);
             // Ensure data is array
             if (Array.isArray(res.data)) {
                 setRecords(res.data);
@@ -81,13 +81,13 @@ const StudyTracker = () => {
         try {
             if (editingRecordId) {
                 // Update existing record
-                await axios.patch(`http://localhost:5001/api/updateStudyRecord/${editingRecordId}`, {
+                await axios.patch(`https://exam-tracker-cloud.onrender.com/api/updateStudyRecord/${editingRecordId}`, {
                     ...newRecord
                 });
                 setEditingRecordId(null);
             } else {
                 // Add new record
-                await axios.post('http://localhost:5001/api/addStudyRecord', {
+                await axios.post('https://exam-tracker-cloud.onrender.com/api/addStudyRecord', {
                     ...newRecord,
                     studentId: userId
                 });
@@ -154,7 +154,7 @@ const StudyTracker = () => {
     const handleDelete = async (id) => {
         if (!confirm('Are you sure you want to delete this record?')) return;
         try {
-            await axios.delete(`http://localhost:5001/api/deleteStudyRecord/${id}`);
+            await axios.delete(`https://exam-tracker-cloud.onrender.com/api/deleteStudyRecord/${id}`);
             fetchRecords();
         } catch (error) {
             console.error('Error deleting record', error);
@@ -163,7 +163,7 @@ const StudyTracker = () => {
 
     const handleUpdateStatus = async (id, newStatus) => {
         try {
-            await axios.patch(`http://localhost:5001/api/updateStudyRecord/${id}`, {
+            await axios.patch(`https://exam-tracker-cloud.onrender.com/api/updateStudyRecord/${id}`, {
                 syllabusStatus: newStatus
             });
             fetchRecords();
@@ -198,7 +198,7 @@ const StudyTracker = () => {
                     }
                 }
 
-                await axios.patch(`http://localhost:5001/api/updateStudyRecord/${activeTimerRecord._id}`, updates);
+                await axios.patch(`https://exam-tracker-cloud.onrender.com/api/updateStudyRecord/${activeTimerRecord._id}`, updates);
                 fetchRecords(); // Refresh to update local state
             } catch (error) {
                 console.error('Error saving progress', error);
